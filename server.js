@@ -1,10 +1,23 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (req,res)=>{
-  res.send("Akhil Server Online 🚀");
+// Root route
+app.get("/", (req, res) => {
+  res.json({
+    status: "success",
+    message: "Akhil Server Online 🚀"
+  });
 });
 
-app.listen(3000,()=>{
+// Example API route
+app.get("/api/user", (req, res) => {
+  res.json({
+    name: "Akhil",
+    age: 17,
+    role: "Developer"
+  });
+});
+
+app.listen(3000, () => {
   console.log("Server Running");
 });
