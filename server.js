@@ -1,23 +1,50 @@
 const express = require("express");
+const crypto = require("crypto");
+
 const app = express();
+app.use(express.json());
 
-// Root route
-app.get("/", (req, res) => {
+let users = [];
+
+/* REGISTER API */
+app.post("/api/register",(req,res)=>{
+
+  const username = req.body.username;
+
+  if(!username){
+    return res.json({error:"Username required"});
+  }
+
+  const apiKey = crypto.randomBytes(16).toString("hex");
+
+  users.push({
+    username,
+    apiKey
+  });
+
   res.json({
-    status: "success",
-    message: "Akhil Server Online 🚀"
+    message:"User Registered ✅",
+    apiKey: apiKey
   });
 });
 
-// Example API route
-app.get("/api/user", (req, res) => {
+/* PRIVATE API */
+app.get("/api/web",(req,res)=>{
+
+  const key = req.query.key;
+
+  const user = users.find(u=>u.apiKey === key);
+
+  if(!user){
+    return res.json({error:"Invalid API Key ❌"});
+  }
+
   res.json({
-    name: "Akhil",
-    age: 17,
-    role: "Developer"
+    owner:user.username,
+    message:"Akhil Secure API Working 🚀"
   });
 });
 
-app.listen(3000, () => {
-  console.log("Server Running");
+app.listen(3000,()=>{
+ console.log("PRO API SYSTEM RUNNING 🔥");
 });
