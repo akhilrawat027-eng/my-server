@@ -1,50 +1,25 @@
 const express = require("express");
-const crypto = require("crypto");
-
 const app = express();
-app.use(express.json());
 
-let users = [];
+const API_KEY = "af86a4cbffdf7aa0eea013d025a0f92f";
 
-/* REGISTER API */
-app.post("/api/register",(req,res)=>{
-
-  const username = req.body.username;
-
-  if(!username){
-    return res.json({error:"Username required"});
-  }
-
-  const apiKey = crypto.randomBytes(16).toString("hex");
-
-  users.push({
-    username,
-    apiKey
-  });
-
-  res.json({
-    message:"User Registered ✅",
-    apiKey: apiKey
-  });
-});
-
-/* PRIVATE API */
-app.get("/api/web",(req,res)=>{
+app.get("/api/web", (req, res) => {
 
   const key = req.query.key;
 
-  const user = users.find(u=>u.apiKey === key);
-
-  if(!user){
-    return res.json({error:"Invalid API Key ❌"});
+  if (key !== API_KEY) {
+    return res.json({
+      error: "Invalid API Key ❌"
+    });
   }
 
   res.json({
-    owner:user.username,
-    message:"Akhil Secure API Working 🚀"
+    status: "SUCCESS ✅",
+    message: "API Working Perfectly 🚀"
   });
+
 });
 
-app.listen(3000,()=>{
- console.log("PRO API SYSTEM RUNNING 🔥");
+app.listen(3000, () => {
+  console.log("Server running...");
 });
