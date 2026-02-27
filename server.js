@@ -1,32 +1,45 @@
+// -----------------------------
+// 🚀 Express Server + Secure API Key
+// -----------------------------
+
 const express = require("express");
 const app = express();
 
-const API_KEY = "af86a4cbffdf7aa0eea013d025a0f92f";
+// ===========================
+// 🔑 API Key Setup (Server Only)
+// ===========================
 
-// ✅ Homepage (important)
-app.get("/", (req, res) => {
-  res.send("🚀 Akhil Server Live Successfully");
-});
+// Example ke liye maine ek strong key generate ki hai
+// Tum isko apni marzi se change kar sakte ho
+const API_KEY = "Cyberakhil027@gmail.com86309615707505460548";
 
-// ✅ API Route
+// ===========================
+// 🌐 API Route
+// ===========================
 app.get("/api/web", (req, res) => {
+  // Header se key check karenge
+  const providedKey = req.headers["x-api-key"];
 
-  const key = req.query.key;
-
-  if (key !== API_KEY) {
-    return res.json({
-      error: "Invalid API Key ❌"
-    });
+  if (!providedKey) {
+    return res.status(400).json({ error: "API Key required ❌ (Send in headers)" });
   }
 
+  if (providedKey !== API_KEY) {
+    return res.status(401).json({ error: "Invalid API Key ❌" });
+  }
+
+  // Success response
   res.json({
     status: "SUCCESS ✅",
     message: "API Working Perfectly 🚀"
   });
-
 });
 
-// ✅ Server Start (always last)
-app.listen(3000, () => {
-  console.log("Server running...");
+// ===========================
+// ⚡ Server Start
+// ===========================
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}...`);
+  console.log(`Test your API with header: x-api-key: ${API_KEY}`);
 });
