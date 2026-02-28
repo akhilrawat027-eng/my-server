@@ -11,7 +11,7 @@ app.use(cors()); // allow all domains to call API
 
 // -------------------- MongoDB URI --------------------
 // Replace with your actual username/password/DB name
-const uri ="mongodb+srv://CyberAkhil:cyberakhil027%40gmail.com@cluster0.mongodb.net/myDB?retryWrites=true&w=majority";
+const uri ="mongodb+srv://Cyberakhil:cyberakhil027%40gmail.com@cluster0.mongodb.net/myDB?retryWrites=true&w=majority";
 
 async function connectDB() {
     try {
