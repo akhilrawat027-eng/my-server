@@ -1,56 +1,31 @@
-// ===========================
-// 🍃 MongoDB Connection
-// ===========================
-const { MongoClient } = require("mongodb");
+// server.js
+const express = require('express');
+const { MongoClient } = require('mongodb');
 
-// 🔑 Replace your password & cluster link here
-const uri = "mongodb+srv://mongodb+srv://Cyberakhil:Cyberakhil027%40gmail.com@cluster0.g4qkm9d.mongodb.net/?appName=Cluster0
+const app = express();
+const port = process.env.PORT || 10000;
+
+// MongoDB URI (with encoded password)
+const uri = "mongodb+srv://Cyberakhil:cyberakhil027%40gmail.com@cluster0.g4qkm9d.mongodb.net/?appName=Cluster0
 
 async function connectDB() {
-  try {
-    await client.connect();
-    console.log("✅ MongoDB Connected Successfully");
-  } catch (err) {
-    console.log("❌ DB Connection Error:", err);
-  }
+    try {
+        const client = new MongoClient(uri);
+        await client.connect();
+        console.log("✅ MongoDB Connected Successfully");
+        return client.db("myDB"); // database select
+    } catch (err) {
+        console.error("MongoDB connection failed:", err);
+        process.exit(1); // crash server if DB fail
+    }
 }
 
-// Connect to Database immediately
 connectDB();
 
-// ===========================
-// 🚀 Express Server + API
-// ===========================
-const express = require("express");
-const app = express();
-
-// ---------------------------
-// 🔑 Secure API Key
-// ---------------------------
-const API_KEY = "Cyberakhil027@gmail.com86309615707505460548";
-
-app.get("/api/web", (req, res) => {
-  const providedKey = req.headers["x-api-key"];
-
-  if (!providedKey) {
-    return res.status(400).json({ error: "API Key required ❌ (Send in headers)" });
-  }
-
-  if (providedKey !== API_KEY) {
-    return res.status(401).json({ error: "Invalid API Key ❌" });
-  }
-
-  res.json({
-    status: "SUCCESS ✅",
-    message: "API Working Perfectly 🚀"
-  });
+app.get('/api/web', (req, res) => {
+    res.json({ status: "SUCCESS", message: "API Working Perfectly" });
 });
 
-// ===========================
-// ⚡ Server Start
-// ===========================
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}...`);
-  console.log(`Test your API with header: x-api-key: ${API_KEY}`);
+app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
 });
