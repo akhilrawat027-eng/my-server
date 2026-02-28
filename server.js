@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const { MongoClient } = require('mongodb');
 
@@ -5,8 +6,9 @@ const app = express();
 const port = process.env.PORT || 10000;
 
 // -------------------- MongoDB URI --------------------
-// Replace with your actual username/password/DB name
-const uri = "mongodb+srv://Cyberakhil027%40gmail.com@cluster0.g4qkm9d.mongodb.net/myDB?retryWrites=true&w=majority";
+// Tumhara actual username/password/DB name
+// Special characters in username/password properly URL encoded
+const uri = "mongodb+srv://Cyberakhil027%40gmail.com:@cluster0.g4qkm9d.mongodb.net/myDB?retryWrites=true&w=majority";
 
 async function connectDB() {
     try {
@@ -20,10 +22,11 @@ async function connectDB() {
     }
 }
 
+// Connect DB immediately
 connectDB();
 
 // -------------------- API Key --------------------
-const API_KEY = "Cyberakhil027@gmail.com86309615707505460548";
+const API_KEY = "CyberExp_Akhil_12345";
 
 // Middleware to check API key
 function checkApiKey(req, res, next) {
@@ -37,12 +40,12 @@ function checkApiKey(req, res, next) {
 
 // -------------------- Routes --------------------
 
-// Secure endpoint
+// Secure endpoint: /api/web
 app.get('/api/web', checkApiKey, (req, res) => {
     res.json({ status: "SUCCESS", message: "API Working Perfectly" });
 });
 
-// Optional extra endpoint
+// Secure endpoint: /api/hello
 app.get('/api/hello', checkApiKey, (req, res) => {
     res.json({ status: "SUCCESS", message: "Hello from API!" });
 });
