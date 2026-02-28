@@ -6,7 +6,7 @@ const port = process.env.PORT || 10000;
 
 // -------------------- MongoDB URI --------------------
 // Replace with your actual username/password/DB name
-const uri = "mongodb+srv://Cyberakhil027%40gmail.com:86309615707505460548@cluster0.g4qkm9d.mongodb.net/myDB?retryWrites=true&w=majority";
+const uri = "mongodb+srv://Cyberakhil027%40gmail.com@cluster0.g4qkm9d.mongodb.net/myDB?retryWrites=true&w=majority";
 
 async function connectDB() {
     try {
