@@ -1,20 +1,24 @@
+ // server.js
+const express = require('express');
+const cors = require('cors');
+const { MongoClient } = require('mongodb');
+
 const app = express();
 const port = process.env.PORT || 10000;
 
 // -------------------- CORS --------------------
-app.use(cors()); // ✅ allow all origins for browser/testing
+app.use(cors()); // allow all domains to call API
 
-// -------------------- MongoDB --------------------
-// Replace username/password/DB name with your own
-const uri = "mongodb+srv://Cyberakhil:cyberakhil027%40gmail.com@cluster0.g4qkm9d.mongodb.net/?appName=Cluster0";
+// -------------------- MongoDB URI --------------------
+// Replace with your actual username/password/DB name
+const uri ="mongodb+srv://CyberAkhil:cyberakhil027%40gmail.com@cluster0.mongodb.net/myDB?retryWrites=true&w=majority";
 
-let db;
 async function connectDB() {
     try {
         const client = new MongoClient(uri);
         await client.connect();
         console.log("✅ MongoDB Connected Successfully");
-        db = client.db("myDB"); // store db instance for future use
+        return client.db("myDB");
     } catch (err) {
         console.error("MongoDB connection failed:", err);
         process.exit(1);
@@ -26,40 +30,30 @@ connectDB();
 // -------------------- API Key --------------------
 const API_KEY = "Cyberakhil027@gmail.com86309615707505460548";
 
-// Middleware: Check API Key
+// Middleware to check API key
 function checkApiKey(req, res, next) {
     const key = req.header("x-api-key");
     if (key && key === API_KEY) {
-        next(); // correct key
+        next(); // correct key → allow
     } else {
-        // Browser direct access allowed without key
+        // Browser direct access allowed
         if (!req.headers["x-api-key"]) {
-            return res.json({ status: "SUCCESS", message: "API Working Perfectly (Browser access)" });
+            return res.json({ status:"SUCCESS", message:"API Working Perfectly (Browser access)" });
         }
-        return res.status(401).json({ status: "FAILED", message: "Invalid API Key" });
+        res.status(401).json({ status: "FAILED", message: "Invalid API Key" });
     }
 }
 
-// -------------------- API Routes --------------------
+// -------------------- Routes --------------------
 
-// Example secure endpoint: /api/web
+// Secure endpoint
 app.get('/api/web', checkApiKey, (req, res) => {
     res.json({ status: "SUCCESS", message: "API Working Perfectly" });
 });
 
-// Example extra endpoint: /api/hello
+// Optional extra endpoint
 app.get('/api/hello', checkApiKey, (req, res) => {
     res.json({ status: "SUCCESS", message: "Hello from API!" });
-});
-
-// Example: database data fetch
-app.get('/api/users', checkApiKey, async (req, res) => {
-    try {
-        const users = await db.collection('users').find({}).toArray(); // future collection
-        res.json({ status: "SUCCESS", data: users });
-    } catch (err) {
-        res.status(500).json({ status: "FAILED", message: err.message });
-    }
 });
 
 // Base route
