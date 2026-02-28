@@ -4,8 +4,7 @@
 const { MongoClient } = require("mongodb");
 
 // 🔑 Replace your password & cluster link here
-const uri = "mongodb+srv://Cyberakhil:Cyberakhil127@gmail@.comcluster0.xxxxx.mongodb.net/myDB?retryWrites=true&w=majority";
-const client = new MongoClient(uri);
+const uri = "mongodb+srv://mongodb+srv://Cyberakhil:Cyberakhil027@gmail.com86309615707505460548@cluster0.g4qkm9d.mongodb.net/?appName=Cluster0
 
 async function connectDB() {
   try {
