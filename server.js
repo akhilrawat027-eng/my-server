@@ -26,7 +26,7 @@ async function connectDB() {
 connectDB();
 
 // -------------------- API Key --------------------
-const API_KEY = "cyberakhil027@gmail.com86309615707505460548";
+const API_KEY = "Cyberakhil027@gmail.com86309615707505460548";
 
 // Middleware to check API key
 function checkApiKey(req, res, next) {
