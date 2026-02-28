@@ -1,23 +1,36 @@
-// -----------------------------
-// 🚀 Express Server + Secure API Key
-// -----------------------------
+// ===========================
+// 🍃 MongoDB Connection
+// ===========================
+const { MongoClient } = require("mongodb");
 
+// 🔑 Replace your password & cluster link here
+const uri = "mongodb+srv://Cyberakhil:Cyberakhil127@gmail@.comcluster0.xxxxx.mongodb.net/myDB?retryWrites=true&w=majority";
+const client = new MongoClient(uri);
+
+async function connectDB() {
+  try {
+    await client.connect();
+    console.log("✅ MongoDB Connected Successfully");
+  } catch (err) {
+    console.log("❌ DB Connection Error:", err);
+  }
+}
+
+// Connect to Database immediately
+connectDB();
+
+// ===========================
+// 🚀 Express Server + API
+// ===========================
 const express = require("express");
 const app = express();
 
-// ===========================
-// 🔑 API Key Setup (Server Only)
-// ===========================
-
-// Example ke liye maine ek strong key generate ki hai
-// Tum isko apni marzi se change kar sakte ho
+// ---------------------------
+// 🔑 Secure API Key
+// ---------------------------
 const API_KEY = "Cyberakhil027@gmail.com86309615707505460548";
 
-// ===========================
-// 🌐 API Route
-// ===========================
 app.get("/api/web", (req, res) => {
-  // Header se key check karenge
   const providedKey = req.headers["x-api-key"];
 
   if (!providedKey) {
@@ -28,7 +41,6 @@ app.get("/api/web", (req, res) => {
     return res.status(401).json({ error: "Invalid API Key ❌" });
   }
 
-  // Success response
   res.json({
     status: "SUCCESS ✅",
     message: "API Working Perfectly 🚀"
